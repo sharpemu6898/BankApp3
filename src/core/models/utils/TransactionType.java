@@ -2,12 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package core.models;
+package core.models.utils;
 
 /**
  *
- * @author AAAAA
+ * @author edangulo
  */
-public class Prueba {
-//hola    
+public enum TransactionType {
+    DEPOSIT,
+    WITHDRAW,
+    TRANSFER
 }
