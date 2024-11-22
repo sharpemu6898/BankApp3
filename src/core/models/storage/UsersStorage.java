@@ -23,33 +23,17 @@ public class UsersStorage {
         return instance;
     }
     
-    public boolean addPerson(Person person) {
-        for (Person p : this.persons) {
-            if (p.getId() == person.getId()) {
+    public boolean addUser(User user) {
+        for (User u : this.users) {
+            if (u.getId() == user.getId()) {
                 return false;
             }
         }
-        this.persons.add(person);
+        this.users.add(user);
         return true;
     }
     
-    public Person getPerson(int id) {
-        for (Person person : this.persons) {
-            if (person.getId() == id) {
-                return person;
-            }
-        }
-        return null;
+    public ArrayList<User> getUsers() {
+        return users;
     }
-    
-    public boolean delPerson(int id) {
-        for (Person person : this.persons) {
-            if (person.getId() == id) {
-                this.persons.remove(person);
-                return true;
-            }
-        }
-        return false;
-    }
-    
 }

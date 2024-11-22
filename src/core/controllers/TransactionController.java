@@ -1,171 +1,130 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package core.controllers;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
+import core.models.Account;
+import core.models.Transaction;
+import core.models.storage.AccountsStorage;
+import core.models.storage.TransactionsStorage;
+import core.models.utils.TransactionType;
 
-/**
- *
- * @author AAAAA
- */
 public class TransactionController {
     
-    public static Response createPerson(String id, String firstname, String lastname, String age, String gender) {
+    public static Response executeTransaction(String transactionType, String sourceAccountID, String destinationAccountID, String amount) {
+        
         try {
-            int idInt, ageInt;
-            boolean genderB;
+            double amountDouble;
+            
+            AccountsStorage accountsStorage = AccountsStorage.getInstance();
+            TransactionsStorage transactionsStorage = TransactionsStorage.getInstance();
             
             try {
-                idInt = Integer.parseInt(id);
-                if (idInt < 0) {
-                    return new Response("Id must be positive", Status.BAD_REQUEST);
+                amountDouble = Double.parseDouble(amount);
+                if (amountDouble < 0) {
+                    return new Response("Amount must be positive", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("Id must be numeric", Status.BAD_REQUEST);
+                return new Response("Amount must be numeric", Status.BAD_REQUEST);
             }
             
-            if (firstname.equals("")) {
-                return new Response("Firstname must be not empty", Status.BAD_REQUEST);
-            }
-            
-            if (lastname.equals("")) {
-                return new Response("Lastname must be not empty", Status.BAD_REQUEST);
-            }
-            
-            try {
-                ageInt = Integer.parseInt(age);
-                if (ageInt < 0) {
-                    return new Response("Age must be positive", Status.BAD_REQUEST);
+            switch (transactionType) {
+                case "Deposit": {
+                    
+                    if (destinationAccountID.equals("")) {
+                        return new Response("Destination account must be not empty", Status.BAD_REQUEST);
+                    }
+                    
+                    Account destinationAccount = null;
+                    for (Account account : accountsStorage.getAccounts()) {
+                        if (account.getId().equals(destinationAccountID)) {
+                            destinationAccount = account;
+                        }
+                    }
+                    
+                    if (destinationAccount != null) {
+                        destinationAccount.deposit(amountDouble);
+                        transactionsStorage.addTransaction(new Transaction(TransactionType.DEPOSIT, null, destinationAccount, amountDouble));
+                        return new Response ("Deposit executed succesfully", Status.CREATED);
+                    }else{
+                        return new Response ("Destination account does not exist", Status.NOT_FOUND);
+                    }
                 }
-            } catch (NumberFormatException ex) {
-                return new Response("Age must be numeric", Status.BAD_REQUEST);
+                case "Withdraw": {
+                    
+                    if (sourceAccountID.equals("")) {
+                        return new Response("Source account must be not empty", Status.BAD_REQUEST);
+                    }
+                    
+                    Account sourceAccount = null;
+                    for (Account account : accountsStorage.getAccounts()) {
+                        if (account.getId().equals(sourceAccountID)) {
+                            sourceAccount = account;
+                        }
+                    }
+                    
+                    if (sourceAccount != null) {
+                        if(!sourceAccount.withdraw(amountDouble)){
+                            return new Response("El monto a retirar es superior al balance de la cuenta", Status.BAD_REQUEST);
+                        }else{
+                            transactionsStorage.addTransaction(new Transaction(TransactionType.WITHDRAW, sourceAccount, null, amountDouble));
+                            return new Response ("Withdraw executed succesfully", Status.CREATED);
+                        }
+                    }else{
+                        return new Response ("Source account does not exist", Status.NOT_FOUND);
+                    }
+                }
+                case "Transfer": {
+                    
+                    if (sourceAccountID.equals("")) {
+                        return new Response("Source account must be not empty", Status.BAD_REQUEST);
+                    }
+                    
+                    if (destinationAccountID.equals("")) {
+                        return new Response("Destination account must be not empty", Status.BAD_REQUEST);
+                    }
+                    
+                    Account sourceAccount = null;
+                    for (Account account : accountsStorage.getAccounts()) {
+                        if (account.getId().equals(sourceAccountID)) {
+                            sourceAccount = account;
+                        }
+                    }
+                    
+                    Account destinationAccount = null;
+                    for (Account account : accountsStorage.getAccounts()) {
+                        if (account.getId().equals(destinationAccountID)) {
+                            destinationAccount = account;
+                        }
+                    }
+                    
+                    if (sourceAccount != null) {
+                        if (destinationAccount != null){
+                            if (sourceAccount.withdraw(amountDouble)){
+                                destinationAccount.deposit(amountDouble);
+                                transactionsStorage.addTransaction(new Transaction(TransactionType.TRANSFER, sourceAccount, destinationAccount, amountDouble));
+                                return new Response ("Transfer executed succesfully", Status.CREATED);
+                            }else{
+                                return new Response ("El monto a retirar es superior al balance de la cuenta",Status.BAD_REQUEST);
+                            }
+                            
+                        }else{
+                            return new Response ("Destination account does not exist", Status.NOT_FOUND);
+                        }
+                    }else{
+                        return new Response ("Source account does not exist", Status.NOT_FOUND);
+                    }
+                }
+                default: {
+                    return new Response ("Invalid transaction type",Status.BAD_REQUEST);
+                }
             }
-            
-            if (gender.equals("M")) {
-                genderB = false;
-            } else if (gender.equals("F")) {
-                genderB = true;
-            } else {
-                return new Response("Gender error", Status.BAD_REQUEST);
-            }
-            
-            Storage storage = Storage.getInstance();            
-            if (!storage.addPerson(new Person(idInt, firstname, lastname, ageInt, genderB))) {
-                return new Response("A person with that id already exists", Status.BAD_REQUEST);
-            }
-            return new Response("Person created successfully", Status.CREATED);
         } catch (Exception ex) {
-            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
+           return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
+          /* REVISAR QUÉ MUESTRA EL MENSAJE EN VISTA
+          catch (Exception ex) {
+           JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+        }*/
     }
-    
-    public static Response readPerson(String id) {
-        try {
-            int idInt;
-            
-            try {
-                idInt = Integer.parseInt(id);
-                if (idInt < 0) {
-                    return new Response("Id must be positive", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Id must be numeric", Status.BAD_REQUEST);
-            }
-            
-            Storage storage = Storage.getInstance();
-            
-            Person person = storage.getPerson(idInt);
-            if (person == null) {
-                return new Response("Person not found", Status.NOT_FOUND);
-            }
-            return new Response("Person found", Status.OK, person);
-        } catch (Exception ex) {
-            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    public static Response updatePerson(String id, String firstname, String lastname, String age, String gender) {
-        try {
-            int idInt, ageInt;
-            boolean genderB;
-            
-            try {
-                idInt = Integer.parseInt(id);
-                if (idInt < 0) {
-                    return new Response("Id must be positive", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Id must be numeric", Status.BAD_REQUEST);
-            }
-            
-            Storage storage = Storage.getInstance();
-            
-            Person person = storage.getPerson(idInt);
-            if (person == null) {
-                return new Response("Person not found", Status.NOT_FOUND);
-            }
-            
-            if (firstname.equals("")) {
-                return new Response("Firstname must be not empty", Status.BAD_REQUEST);
-            }
-            
-            if (lastname.equals("")) {
-                return new Response("Lastname must be not empty", Status.BAD_REQUEST);
-            }
-            
-            try {
-                ageInt = Integer.parseInt(age);
-                if (ageInt < 0) {
-                    return new Response("Age must be positive", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Age must be numeric", Status.BAD_REQUEST);
-            }
-            
-            if (gender.equals("M")) {
-                genderB = false;
-            } else if (gender.equals("F")) {
-                genderB = true;
-            } else {
-                return new Response("Gender error", Status.BAD_REQUEST);
-            }
-            
-            person.setFirstname(firstname);
-            person.setLastname(lastname);
-            person.setAge(ageInt);
-            person.setGender(genderB);
-            
-            return new Response("Person data updated successfully", Status.OK);
-        } catch (Exception ex) {
-            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    public static Response deletePerson(String id) {
-        try {
-            int idInt;
-            
-            try {
-                idInt = Integer.parseInt(id);
-                if (idInt < 0) {
-                    return new Response("Id must be positive", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Id must be numeric", Status.BAD_REQUEST);
-            }
-            
-            Storage storage = Storage.getInstance();
-            if (!storage.delPerson(idInt)) {
-                return new Response("Person not found", Status.NOT_FOUND);
-            }
-            return new Response("Person deleted successfully", Status.NO_CONTENT);
-        } catch (Exception ex) {
-            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    
 }
