@@ -65,7 +65,7 @@ public class TransactionController {
                     
                     if (sourceAccount != null) {
                         if(!sourceAccount.withdraw(amountDouble)){
-                            return new Response("El monto a retirar es superior al balance de la cuenta", Status.BAD_REQUEST);
+                            return new Response("You can't withdraw an amount greater than the source account balance", Status.BAD_REQUEST);
                         }else{
                             transactionsStorage.addTransaction(new Transaction(TransactionType.WITHDRAW, sourceAccount, null, amountDouble));
                             return new Response ("Withdraw executed succesfully", Status.CREATED);
@@ -105,7 +105,7 @@ public class TransactionController {
                                 transactionsStorage.addTransaction(new Transaction(TransactionType.TRANSFER, sourceAccount, destinationAccount, amountDouble));
                                 return new Response ("Transfer executed succesfully", Status.CREATED);
                             }else{
-                                return new Response ("El monto a retirar es superior al balance de la cuenta",Status.BAD_REQUEST);
+                                return new Response ("You can't transfer an amount greater than the source account balance",Status.BAD_REQUEST);
                             }
                             
                         }else{
@@ -122,9 +122,5 @@ public class TransactionController {
         } catch (Exception ex) {
            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
-          /* REVISAR QUÉ MUESTRA EL MENSAJE EN VISTA
-          catch (Exception ex) {
-           JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
-        }*/
     }
 }
