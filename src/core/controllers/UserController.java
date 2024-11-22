@@ -8,9 +8,7 @@ import core.models.storage.UsersStorage;
 
 public class UserController {
     
-    //falta
-    //los id de los usuarios deben tener máximo 9 digitos (PENDIENTE)
-    //La edad de los usuarios debe ser mayor o igual a 18. (PENDIENTE)
+    
     
     public static Response registerUser(String id, String firstname, String lastname, String age) {
         try {
