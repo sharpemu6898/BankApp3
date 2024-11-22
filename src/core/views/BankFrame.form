@@ -77,7 +77,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="259" max="-2" attributes="0"/>
-                      <Component id="registerButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="registerUserButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -108,7 +108,7 @@
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="registerButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="registerUserButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="83" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -156,6 +156,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="IDTextField">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="IDTextFieldActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="firstnameTextField">
             </Component>
@@ -163,7 +166,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="ageTextField">
             </Component>
-            <Component class="javax.swing.JButton" name="registerButton">
+            <Component class="javax.swing.JButton" name="registerUserButton">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="12" style="3"/>
@@ -171,7 +174,7 @@
                 <Property name="text" type="java.lang.String" value="Register"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="registerButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="registerUserButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -211,7 +214,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="265" max="-2" attributes="0"/>
-                      <Component id="createButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="createAccountButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -232,7 +235,7 @@
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="createButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="createAccountButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="163" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -267,7 +270,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="initialBalanceTextField">
             </Component>
-            <Component class="javax.swing.JButton" name="createButton">
+            <Component class="javax.swing.JButton" name="createAccountButton">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="12" style="3"/>
@@ -275,7 +278,7 @@
                 <Property name="text" type="java.lang.String" value="Create"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createAccountButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -304,10 +307,10 @@
                               </Group>
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="destinationAccountTextField" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="sourceAccountTextField" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="destinationAccountIDTextField" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="sourceAccountIDTextField" alignment="1" max="32767" attributes="0"/>
                                   <Component id="transactionTypeComboBox" pref="485" max="32767" attributes="0"/>
-                                  <Component id="AmountTextField" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="amountTextField" alignment="1" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -319,7 +322,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="255" max="-2" attributes="0"/>
-                      <Component id="executeButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="executeTransactionButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -336,21 +339,21 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="sourceAccountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="sourceAccountIDTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="destinationAccountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="destinationAccountIDTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="AmountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="amountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="executeButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="executeTransactionButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="83" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -397,14 +400,14 @@
                 <Property name="text" type="java.lang.String" value="Amount"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="sourceAccountTextField">
+            <Component class="javax.swing.JTextField" name="sourceAccountIDTextField">
             </Component>
-            <Component class="javax.swing.JTextField" name="destinationAccountTextField">
+            <Component class="javax.swing.JTextField" name="destinationAccountIDTextField">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="AmountTextField">
+            <Component class="javax.swing.JTextField" name="amountTextField">
             </Component>
             <Component class="javax.swing.JComboBox" name="transactionTypeComboBox">
               <Properties>
@@ -416,11 +419,14 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transactionTypeComboBoxActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JButton" name="executeButton">
+            <Component class="javax.swing.JButton" name="executeTransactionButton">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="12" style="3"/>
@@ -428,7 +434,7 @@
                 <Property name="text" type="java.lang.String" value="Execute"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="executeButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="executeTransactionButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -456,7 +462,7 @@
                               <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
                               <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="RefreshButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="refreshUsersListButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -469,7 +475,7 @@
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="RefreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="refreshUsersListButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" pref="264" max="32767" attributes="0"/>
@@ -508,7 +514,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="RefreshButton">
+            <Component class="javax.swing.JButton" name="refreshUsersListButton">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="12" style="3"/>
@@ -516,7 +522,7 @@
                 <Property name="text" type="java.lang.String" value="Refresh"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RefreshButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshUsersListButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -542,7 +548,7 @@
                       <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                       <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="refreshListAccountsButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="refreshAccountsListButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -553,7 +559,7 @@
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="refreshListAccountsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="refreshAccountsListButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane3" pref="264" max="32767" attributes="0"/>
@@ -578,7 +584,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="listAccountsTable">
+                <Component class="javax.swing.JTable" name="accountsListTable">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="3" rowCount="4">
@@ -591,7 +597,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="refreshListAccountsButton">
+            <Component class="javax.swing.JButton" name="refreshAccountsListButton">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="12" style="3"/>
@@ -599,7 +605,7 @@
                 <Property name="text" type="java.lang.String" value="Refresh"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshListAccountsButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshAccountsListButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -625,7 +631,7 @@
                       <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                       <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="refreshListTransactionsButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="refreshTransactionsListButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -636,7 +642,7 @@
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="refreshListTransactionsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="refreshTransactionsListButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" pref="264" max="32767" attributes="0"/>
@@ -675,7 +681,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="refreshListTransactionsButton">
+            <Component class="javax.swing.JButton" name="refreshTransactionsListButton">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="12" style="3"/>
@@ -683,7 +689,7 @@
                 <Property name="text" type="java.lang.String" value="Refresh"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshListTransactionsButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshTransactionsListButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
