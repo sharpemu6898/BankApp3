@@ -21,6 +21,9 @@ public class UserController {
                 if (idInt < 0) {
                     return new Response("Id must be positive", Status.BAD_REQUEST);
                 }
+                if (idInt>100000000){
+                    return new Response("Id must have max 9 digits",Status.BAD_REQUEST);
+                }
             } catch (NumberFormatException ex) {
                 return new Response("Id must be numeric", Status.BAD_REQUEST);
             }
@@ -37,6 +40,9 @@ public class UserController {
                 ageInt = Integer.parseInt(age);
                 if (ageInt < 0) {
                     return new Response("Age must be positive", Status.BAD_REQUEST);
+                }
+                if(ageInt<18){
+                    return new Response("You must be 18 year older",Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
                 return new Response("Age must be numeric", Status.BAD_REQUEST);
