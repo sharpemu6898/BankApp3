@@ -1,171 +1,72 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package core.controllers;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
+import core.models.Account;
+import core.models.User;
+import core.models.storage.AccountsStorage;
+import core.models.storage.UsersStorage;
+import java.util.Random;
 
-/**
- *
- * @author AAAAA
- */
 public class AccountController {
     
-    public static Response createPerson(String id, String firstname, String lastname, String age, String gender) {
+    public static Response createAccount(String userID, String initialBalance) {
         try {
-            int idInt, ageInt;
-            boolean genderB;
+            int userIDInt;
+            double initialBalanceDouble;
+            String accountId;
             
+            //validar userID 
             try {
-                idInt = Integer.parseInt(id);
-                if (idInt < 0) {
-                    return new Response("Id must be positive", Status.BAD_REQUEST);
+                userIDInt = Integer.parseInt(userID);
+                if (userIDInt < 0) {
+                    return new Response("ID must be positive", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
                 return new Response("Id must be numeric", Status.BAD_REQUEST);
             }
             
-            if (firstname.equals("")) {
-                return new Response("Firstname must be not empty", Status.BAD_REQUEST);
-            }
-            
-            if (lastname.equals("")) {
-                return new Response("Lastname must be not empty", Status.BAD_REQUEST);
-            }
-            
+            //validar Balance
             try {
-                ageInt = Integer.parseInt(age);
-                if (ageInt < 0) {
-                    return new Response("Age must be positive", Status.BAD_REQUEST);
+                initialBalanceDouble = Double.parseDouble(initialBalance);
+                if (initialBalanceDouble < 0) {
+                    return new Response("Initial balance must be greater than 0", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("Age must be numeric", Status.BAD_REQUEST);
+                return new Response("Initial balance must be numeric", Status.BAD_REQUEST);
             }
             
-            if (gender.equals("M")) {
-                genderB = false;
-            } else if (gender.equals("F")) {
-                genderB = true;
-            } else {
-                return new Response("Gender error", Status.BAD_REQUEST);
+            AccountsStorage accountStorage = AccountsStorage.getInstance(); 
+            UsersStorage usersStorage = UsersStorage.getInstance(); 
+            
+            //Busqueda del usuario al que se le va a crear la cuenta
+            User selectedUser = null;
+            for (User user : usersStorage.getUsers()) {
+                if (user.getId() == userIDInt && selectedUser == null) {
+                    selectedUser = user;
+                }
             }
             
-            Storage storage = Storage.getInstance();            
-            if (!storage.addPerson(new Person(idInt, firstname, lastname, ageInt, genderB))) {
-                return new Response("A person with that id already exists", Status.BAD_REQUEST);
+            //Generación aleatorio del ID de la cuenta
+            if (selectedUser != null) {
+                Random random = new Random();
+                int first = random.nextInt(1000);
+                int second = random.nextInt(1000000);
+                int third = random.nextInt(100);
+                
+                accountId = String.format("%03d", first) + "-" + String.format("%06d", second) + "-" + String.format("%02d", third);
+                
+                if (!accountStorage.addAccount(new Account(accountId, selectedUser, initialBalanceDouble))) {
+                return new Response("The automatically generated account ID already exists, please try again", Status.INTERNAL_SERVER_ERROR);
             }
-            return new Response("Person created successfully", Status.CREATED);
+            return new Response("Account created successfully. Account ID:"+ accountId , Status.CREATED);
+            
+            }else{
+               return new Response("The user is not registrated yet", Status.NOT_FOUND); //REVISAR
+            }
         } catch (Exception ex) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
-    
-    public static Response readPerson(String id) {
-        try {
-            int idInt;
-            
-            try {
-                idInt = Integer.parseInt(id);
-                if (idInt < 0) {
-                    return new Response("Id must be positive", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Id must be numeric", Status.BAD_REQUEST);
-            }
-            
-            Storage storage = Storage.getInstance();
-            
-            Person person = storage.getPerson(idInt);
-            if (person == null) {
-                return new Response("Person not found", Status.NOT_FOUND);
-            }
-            return new Response("Person found", Status.OK, person);
-        } catch (Exception ex) {
-            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    public static Response updatePerson(String id, String firstname, String lastname, String age, String gender) {
-        try {
-            int idInt, ageInt;
-            boolean genderB;
-            
-            try {
-                idInt = Integer.parseInt(id);
-                if (idInt < 0) {
-                    return new Response("Id must be positive", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Id must be numeric", Status.BAD_REQUEST);
-            }
-            
-            Storage storage = Storage.getInstance();
-            
-            Person person = storage.getPerson(idInt);
-            if (person == null) {
-                return new Response("Person not found", Status.NOT_FOUND);
-            }
-            
-            if (firstname.equals("")) {
-                return new Response("Firstname must be not empty", Status.BAD_REQUEST);
-            }
-            
-            if (lastname.equals("")) {
-                return new Response("Lastname must be not empty", Status.BAD_REQUEST);
-            }
-            
-            try {
-                ageInt = Integer.parseInt(age);
-                if (ageInt < 0) {
-                    return new Response("Age must be positive", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Age must be numeric", Status.BAD_REQUEST);
-            }
-            
-            if (gender.equals("M")) {
-                genderB = false;
-            } else if (gender.equals("F")) {
-                genderB = true;
-            } else {
-                return new Response("Gender error", Status.BAD_REQUEST);
-            }
-            
-            person.setFirstname(firstname);
-            person.setLastname(lastname);
-            person.setAge(ageInt);
-            person.setGender(genderB);
-            
-            return new Response("Person data updated successfully", Status.OK);
-        } catch (Exception ex) {
-            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    public static Response deletePerson(String id) {
-        try {
-            int idInt;
-            
-            try {
-                idInt = Integer.parseInt(id);
-                if (idInt < 0) {
-                    return new Response("Id must be positive", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Id must be numeric", Status.BAD_REQUEST);
-            }
-            
-            Storage storage = Storage.getInstance();
-            if (!storage.delPerson(idInt)) {
-                return new Response("Person not found", Status.NOT_FOUND);
-            }
-            return new Response("Person deleted successfully", Status.NO_CONTENT);
-        } catch (Exception ex) {
-            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    
 }

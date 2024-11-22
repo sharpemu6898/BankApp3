@@ -23,33 +23,11 @@ public class TransactionsStorage {
         return instance;
     }
     
-    public boolean addPerson(Person person) {
-        for (Person p : this.persons) {
-            if (p.getId() == person.getId()) {
-                return false;
-            }
-        }
-        this.persons.add(person);
-        return true;
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
     }
     
-    public Person getPerson(int id) {
-        for (Person person : this.persons) {
-            if (person.getId() == id) {
-                return person;
-            }
-        }
-        return null;
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
     }
-    
-    public boolean delPerson(int id) {
-        for (Person person : this.persons) {
-            if (person.getId() == id) {
-                this.persons.remove(person);
-                return true;
-            }
-        }
-        return false;
-    }
-    
 }

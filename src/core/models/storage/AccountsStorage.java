@@ -25,31 +25,15 @@ public class AccountsStorage {
     
     public boolean addAccount(Account account) {
         for (Account a : this.accounts) {
-            if (a.getId() == account.getId()) {
+            if (a.getId().equals(account.getId())) {
                 return false;
             }
         }
         this.accounts.add(account);
         return true;
     }
-    
-    public Person getPerson(int id) {
-        for (Person person : this.persons) {
-            if (person.getId() == id) {
-                return person;
-            }
-        }
-        return null;
-    }
-    
-    public boolean delPerson(int id) {
-        for (Person person : this.persons) {
-            if (person.getId() == id) {
-                this.persons.remove(person);
-                return true;
-            }
-        }
-        return false;
-    }
-    
+
+    public ArrayList<Account> getAccounts() {
+        return accounts;
+    }    
 }
