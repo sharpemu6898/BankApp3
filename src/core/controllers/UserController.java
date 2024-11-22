@@ -21,7 +21,7 @@ public class UserController {
                 if (idInt < 0) {
                     return new Response("Id must be positive", Status.BAD_REQUEST);
                 }
-                if (idInt>100000000){
+                if (idInt>999999999){
                     return new Response("Id must have max 9 digits",Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
