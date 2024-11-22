@@ -4,10 +4,12 @@ package core.views;
 import core.controllers.AccountController;
 import core.controllers.AccountsListController;
 import core.controllers.TransactionController;
+import core.controllers.TransactionsListController;
 import core.controllers.UserController;
 import core.controllers.UsersListController;
 import core.controllers.utils.Response;
 import core.models.Account;
+import core.models.Transaction;
 import core.models.User;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -634,15 +636,26 @@ public class BankFrame extends javax.swing.JFrame {
 
     private void refreshTransactionsListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshTransactionsListButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-        model.setRowCount(0);
+        DefaultTableModel model = (DefaultTableModel) listTransactionsTable.getModel();
+        Response response = TransactionsListController.listTransactions();
         
-        ArrayList<Transaction> transactionsCopy = (ArrayList<Transaction>) this.transactions.clone();
-        Collections.reverse(transactionsCopy);
-        
-        for (Transaction transaction : transactionsCopy) {
-            model.addRow(new Object[]{transaction.getType().name(), (transaction.getSourceAccount() != null ? transaction.getSourceAccount().getId() : "None"), (transaction.getDestinationAccount()!= null ? transaction.getDestinationAccount().getId() : "None"), transaction.getAmount()});
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            
+            @SuppressWarnings("unchecked") //casting explícito
+            ArrayList<Transaction> transactions = (ArrayList<Transaction>) response.getObject();   
+            
+            model.setRowCount(0);
+                for (Transaction transaction : transactions) {
+                    model.addRow(new Object[]{transaction.getType().name(), (transaction.getSourceAccount() != null ? transaction.getSourceAccount().getId() : "None"), (transaction.getDestinationAccount()!= null ? transaction.getDestinationAccount().getId() : "None"), transaction.getAmount()});
+                }
         }
+        
     }//GEN-LAST:event_refreshTransactionsListButtonActionPerformed
 
     private void IDTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDTextFieldActionPerformed
